@@ -58,6 +58,7 @@ Quickling版统计脚本需要修改/添加的文件如下所示：
 
 2 **FISPagelet.class.php** 
 加载autopack，添加生成统计url函数`getCountUrl`，同时在两个地方调用以页面中生成统计的JS脚本
+
 第一个地方：
 `renderStatic`函数以下这行代码**前面**
 ```php
