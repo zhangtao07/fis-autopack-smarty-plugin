@@ -472,7 +472,7 @@ class FISPagelet {
             }
 
             /**************autopack getCountUrl for sending log*********************/
-            $jsCode = FISAutoPack::getCountUrl($arr);
+            $jsCode = FISAutoPack::getCountUrl();
             if($jsCode != ""){
                 $code .=  '<script type="text/javascript">' . $jsCode . '</script>';
             }
@@ -609,7 +609,7 @@ class FISPagelet {
                 unset($pagelet);
 
                 /*********************autopack *****************************/
-                $jsCode = FISAutoPack::getCountUrl($res);
+                $jsCode = FISAutoPack::getCountUrl();
                 if($jsCode != "" && !$_GET['fis_widget']){
                     $res['script'] = $res['script'] ? $res['script'] . $jsCode : $jsCode;
                 }

@@ -11,7 +11,10 @@
 ## 日志格式
 
 示例日志
-`http://nsclick.baidu.com/u.gif?pid=242&v=2&fs=b458ed2,f2b7060&otherStr=b458ee2,f2b7061&page=pagelet/page/index.tpl&sid=1396350814&hash=98d905c4aa&fid=test`
+
+```
+http://nsclick.baidu.com/u.gif?pid=242&v=2&fs=b458ed2,f2b7060&otherStr=b458ee2,f2b7061&page=pagelet/page/index.tpl&sid=1396350814&hash=98d905c4aa&fid=test
+```
 
 字段说明
 
@@ -38,10 +41,47 @@
 
 以下基于FIS Plus标准统计版本及Quickling版本分别介绍插件修改说明：
 
-### **标准FIS Plus方式**
+`注`：所有插入的统计代码均用`autopack`注释包裹
 
-TODO
+### **FIS Plus 方式**
 
+标准FIS Plus版统计脚本需要修改/添加的文件如下所示：
+
+```bash
+|---plugin //smarty 插件目录
+|     |---FISAutoPack.class.php //添加通用统计API脚本
+|     |---FISResource.class.php //提供获取静态资源hash接口
+|     |---compiler.html.php //提供设置fid、sampleRate等支持
+|     |---compiler.require.php //提供统计支持
+|     |---compiler.widget.php //提供统计支持
+|     |---compiler.setfs.php //设置首屏完成
+```
+
+#### 代码修改说明
+
+1 **FISResource.class.php** 
+
+ - 顶部引入`FISAutopack.php`; 
+ - 添加`getStaticInfo`函数从map.json中读取资源信息，主要获取hash时使用;
+ - 在`renderScriptPool`函数中添加输出统计代码
+
+
+2 **compiler.html.php插件**
+此插件允许用户在{%html%}中填入fid、sampleRate进行初始化，同时获取模板名作为pageName。代码见插件中autopack标记的注释中间。
+
+3 **compiler.require.php插件**
+此插件在用户使用require加载资源的时候进行统计，代码见插件中autopack标记的注释中间。
+
+4 **compiler.widget.php插件**
+此插件在用户使用widget加载资源的时候进行统计，代码见插件中autopack标记的注释中间。
+
+5 **compiler.setfs.php插件**
+
+此插件主要提供接口供产品线在smarty模板中设置首屏完成。此插件运行之前加载的资源认为是首屏资源。如不区分是否首屏资源，不调用即可。调用方法：
+
+```php
+{%setfs%} //设置首屏完成
+```
 ### **Quickling方式**
 
 Quickling版统计脚本需要修改/添加的文件如下所示：
@@ -55,55 +95,28 @@ Quickling版统计脚本需要修改/添加的文件如下所示：
 |     |---compiler.html.php //提供设置fid、sampleRate等支持
 |     |---compiler.require.php //提供统计支持
 |     |---compiler.widget.php //提供统计支持
-|     |---compiler.setfs.php //添加此插件，设置首屏完成功能
 ```
 
 #### 代码修改说明
 
 1 **FISResource.class.php** 
-
 添加`getStaticInfo`函数从map.json中读取资源信息，主要获取hash时使用
 
 2 **FISPagelet.class.php** 
-
-顶部require autopack文件。添加生成统计url函数`getCountUrl`，同时在两个地方调用以页面中生成统计的JS脚本
-
-
+加载autopack，添加生成统计url函数`getCountUrl`，同时在两个地方调用以页面中生成统计的JS脚本
 第一个地方：
-
 `renderStatic`函数以下这行代码**前面**
-
 ```php
 $html = str_replace(self::JS_SCRIPT_HOOK, $code . self::JS_SCRIPT_HOOK, $html);
 ```
 第二个地方：
-
 `display`函数以下这行代码**前面**
 ```php
 $title = convertToUtf8(self::$_title);
 ```
 
-3 **compiler.html.php插件**
-
-此插件允许用户在{%html%}中填入fid、sampleRate进行初始化，同时获取模板名作为pageName。代码见插件中autopack标记的注释中间，注意有两处。
-
-4 **compiler.require.php插件**
-
-此插件在用户使用require加载资源的时候进行统计，代码见插件中autopack标记的注释中间。
-
-5 **compiler.widget.php插件**
-
-此插件在用户使用widget加载资源的时候进行统计，代码见插件中autopack标记的注释中间，注意有两处。
-
-6 **compiler.setfs.php插件**
-
-此插件主要提供接口供产品线在smarty模板中设置首屏完成。此插件运行之前加载的资源认为是首屏资源。如不区分是否首屏资源，不调用即可。调用方法：
-
-```php
-    {%setfs%}
-```
-
-
+3 **几个编译插件**
+`html`、`require`、`widget`、`setfs` 四个插件与FIS Plus基本一致
 
 
 
