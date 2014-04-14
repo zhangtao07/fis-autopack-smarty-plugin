@@ -95,7 +95,7 @@ class FISAutoPack {
                 $otherStr   = implode(',', $other);
                 $hashStr  .=  ($fsStr . $otherStr);
 
-                $code .= '(new Image()).src="http://nsclick.baidu.com/u.gif?pid=242&v=' . self::$VER . '&fs=' . $fsStr . "&otherStr=" . $otherStr .  "&page=" . $pageName  . '&sid=' . $timeStamp . '&hash=<STATIC_HASH>' . '&fid=' . $fid . '";';
+                $code .= '(new Image()).src="http://static.tieba.baidu.com/tb/pms/img/st.gif?pid=242&v=' . self::$VER . '&fs=' . $fsStr . "&otherStr=" . $otherStr .  "&page=" . $pageName  . '&sid=' . $timeStamp . '&hash=<STATIC_HASH>' . '&fid=' . $fid . '";';
                 $code = str_replace("<STATIC_HASH>", substr(md5($hashStr), 0, 10), $code);
             }
         }
