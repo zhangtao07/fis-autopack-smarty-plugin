@@ -45,6 +45,8 @@ http://nsclick.baidu.com/u.gif?pid=242&v=2&fs=b458ed2,f2b7060&otherStr=b458ee2,f
 
 ### **FIS Plus 方式**
 
+`注意：` 此统计插件根据FIS Plus 最新版[pc-plugin 0.0.9](http://lightjs.duapp.com/repos/component_detail?name=pc-plugin)插件修改而成，低版本可能会不兼容。如不兼容推荐升级插件，或者根据文档将插件修改部分添加到smarty插件中
+
 标准FIS Plus版统计脚本需要修改/添加的文件如下所示：
 
 ```bash

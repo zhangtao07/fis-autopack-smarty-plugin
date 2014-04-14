@@ -23,9 +23,18 @@ class fis_widget_map {
 }
 
 function smarty_compiler_widget($arrParams,  $smarty){
+    //支持1.X widget 通过path属性判断 同时判断是否有name属性
+    if (isset($arrParams['path'])) {
+        if(!isset($arrParams['name']) || strpos($arrParams['name'], ':') === false){
+            $path = $arrParams['path'];
+            unset($arrParams['path']);
+            return getWidgetStrCode($path, $arrParams);
+        }
+    }
+
     $strResourceApiPath = preg_replace('/[\\/\\\\]+/', '/', dirname(__FILE__) . '/FISResource.class.php');
-    $strCode = '<?php if(!class_exists(\'FISResource\')){require_once(\'' . $strResourceApiPath . '\');}';
-    
+    $strCode = '<?php if(!class_exists(\'FISResource\', false)){require_once(\'' . $strResourceApiPath . '\');}';
+
     /******************autopack load php*****************************/
     $strAutoPackPath = preg_replace('/[\\/\\\\]+/', '/', dirname(__FILE__) . '/FISAutoPack.class.php');
     $strCode = '<?php if(!class_exists(\'FISAutoPack\')){require_once(\'' . $strAutoPackPath . '\');}';
@@ -36,15 +45,8 @@ function smarty_compiler_widget($arrParams,  $smarty){
     $strName = $arrParams['name'];
     unset($arrParams['name']);
     //construct params
-    $arrFuncParams = array();
-    foreach ($arrParams as $_key => $_value) {
-        if (is_int($_key)) {
-            $arrFuncParams[] = "$_key=>$_value";
-        } else {
-            $arrFuncParams[] = "'$_key'=>$_value";
-        }
-    }
-    $strFuncParams = 'array(' . implode(',', $arrFuncParams) . ')';
+    $strFuncParams = getFuncParams($arrParams);
+
     if($bHasCall){
         unset($arrParams['call']);
         $strTplFuncName = '\'smarty_template_function_\'.' . $strCall;
@@ -85,4 +87,36 @@ function smarty_compiler_widget($arrParams,  $smarty){
     }
     $strCode .= '?>';
     return $strCode;
+}
+
+
+function getWidgetStrCode($path, $arrParams){
+    $strFuncParams = getFuncParams($arrParams);
+    $path = trim($path,"\"");
+    $fn = '"smarty_template_function_fis_' . strtr(substr($path, 0, strrpos($path, '/')), '/', '_') . '"';
+    $strCode = '<?php ';
+    $strCode .= 'if(is_callable(' . $fn . ')){';
+    $strCode .=     'return call_user_func(' . $fn . ',$_smarty_tpl,' . $strFuncParams . ');';
+    $strCode .= '}else{';
+    $strCode .=     '$fis_widget_output = $_smarty_tpl->getSubTemplate("' . $path . '", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, '. $strFuncParams.', Smarty::SCOPE_LOCAL);';
+    $strCode .=     'if(is_callable(' . $fn .')){';
+    $strCode .=         'return call_user_func('. $fn . ',$_smarty_tpl,' . $strFuncParams . ');';
+    $strCode .=     '}else{';
+    $strCode .=         'echo $fis_widget_output;';
+    $strCode .=     '}';
+    $strCode .= '}?>';
+    return $strCode;
+}
+
+function getFuncParams($arrParams){
+    $arrFuncParams = array();
+    foreach ($arrParams as $_key => $_value) {
+        if (is_int($_key)) {
+            $arrFuncParams[] = "$_key=>$_value";
+        } else {
+            $arrFuncParams[] = "'$_key'=>$_value";
+        }
+    }
+    $strFuncParams = 'array(' . implode(',', $arrFuncParams) . ')';
+    return $strFuncParams;
 }
