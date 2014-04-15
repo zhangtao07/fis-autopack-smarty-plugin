@@ -37,7 +37,7 @@ function smarty_compiler_widget($arrParams,  $smarty){
 
     /******************autopack load php*****************************/
     $strAutoPackPath = preg_replace('/[\\/\\\\]+/', '/', dirname(__FILE__) . '/FISAutoPack.class.php');
-    $strCode = '<?php if(!class_exists(\'FISAutoPack\')){require_once(\'' . $strAutoPackPath . '\');}';
+    $strCode .= 'if(!class_exists(\'FISAutoPack\')){require_once(\'' . $strAutoPackPath . '\');}';
     /******************autopack end******************************/
 
     $strCall = $arrParams['call'];

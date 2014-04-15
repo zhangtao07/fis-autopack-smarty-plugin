@@ -19,8 +19,7 @@ function smarty_compiler_require($arrParams,  $smarty){
 
         /********autopack collect require resource************/
         $strAutoPackPath = preg_replace('/[\\/\\\\]+/', '/', dirname(__FILE__) . '/lib/FISAutoPack.class.php');
-        //注意加php头，否则解析出错
-        $strCode = '<?php if(!class_exists(\'FISAutoPack\')){require_once(\'' . $strAutoPackPath . '\');}';
+        $strCode .= 'if(!class_exists(\'FISAutoPack\')){require_once(\'' . $strAutoPackPath . '\');}';
         $strCode .= 'FISAutoPack::addHashTable(' . $strName . ',$_smarty_tpl->smarty' . ');';
         /*****************autopack end**********************/
 
