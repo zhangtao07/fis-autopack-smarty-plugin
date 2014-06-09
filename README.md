@@ -97,6 +97,7 @@ Quickling版统计脚本需要修改/添加的文件如下所示：
 |     |---compiler.html.php //提供设置fid、sampleRate等支持
 |     |---compiler.require.php //提供统计支持
 |     |---compiler.widget.php //提供统计支持
+|     |---compiler.setfs.php //设置首屏完成
 ```
 
 #### 代码修改说明
