@@ -63,7 +63,6 @@ http://static.tieba.baidu.com/tb/pms/img/st.gif?pid=242&v=2&fs=b458ed2,f2b7060&o
 
 1 **FISResource.class.php** 
 
- - 顶部引入`FISAutopack.php`; 
  - 添加`getStaticInfo`函数从map.json中读取资源信息，主要获取hash时使用;
  - 在`renderScriptPool`函数中添加输出统计代码
 
