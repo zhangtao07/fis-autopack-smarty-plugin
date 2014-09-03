@@ -13,7 +13,7 @@
 示例日志
 
 ```
-http://nsclick.baidu.com/u.gif?pid=242&v=2&fs=b458ed2,f2b7060&otherStr=b458ee2,f2b7061&page=pagelet/page/index.tpl&sid=1396350814&hash=98d905c4aa&fid=test
+http://static.tieba.baidu.com/tb/pms/img/st.gif?pid=242&v=2&fs=b458ed2,f2b7060&otherStr=b458ee2,f2b7061&page=pagelet/page/index.tpl&sid=1396350814&hash=98d905c4aa&fid=test
 ```
 
 字段说明
