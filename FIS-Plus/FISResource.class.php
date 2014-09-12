@@ -1,5 +1,5 @@
 <?php
-if (!class_exists('FISAutopack')) require_once(dirname(__FILE__) . '/FISAutopack.class.php');
+if (!class_exists('FISAutoPack')) require_once(dirname(__FILE__) . '/FISAutoPack.class.php');
 
 class FISResource {
 
@@ -187,7 +187,7 @@ class FISResource {
         }
 
         /**************autopack getCountUrl for sending log*********************/
-        if (class_exists('FISAutopack') ) {
+        if (class_exists('FISAutoPack') ) {
             $jsCode = FISAutoPack::getCountUrl();
             if($jsCode != ""){
                 $html .=  '<script type="text/javascript">' . $jsCode . '</script>';
